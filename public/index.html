@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+
+<html>
+   <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script type = "text/javascript">
+         function StartConsuming() {
+
+            if ("WebSocket" in window) {
+               // Let us open a web socket
+               var ws = new WebSocket("ws://localhost:8080/democonsume");
+
+               ws.onopen = function() {
+
+                  // Web Socket is connected, send data using send()
+                  ws.send("{\"action\":\"start\",\"custom\":\"\"}");
+                  alert("Begun consuming");
+               };
+            } else {
+               // The browser doesn't support WebSocket
+               alert("WebSocket NOT supported by your Browser!");
+            }
+         }
+      </script>
+      <script type = "text/javascript">
+         function StopConsuming() {
+
+            if ("WebSocket" in window) {
+               // Let us open a web socket
+               var ws = new WebSocket("ws://localhost:8080/democonsume");
+               ws.onopen = function() {
+                   ws.send("{\"action\":\"stop\",\"custom\":\"\"}");
+                   alert("Stopped consuming");
+                   ws.close()
+               };
+            } else {
+
+               // The browser doesn't support WebSocket
+               alert("WebSocket NOT supported by your Browser!");
+            }
+         }
+      </script>
+   </head>
+
+   <body>
+      <div id = "sse">
+         <a href = "javascript:StartConsuming()">Run WebSocket</a>
+         <a href = "javascript:StopConsuming()">Stop WebSocket</a>
+      </div>
+
+      <h2>Trade History Demo</h2>
+
+      <h4>Produce to Kafka</h4>
+      <form action="produce" method="post" enctype="application/x-www-form-urlencoded" target="redirect">
+          Id: <input type="text" name="id" required="required"><br>
+          Owner: <input type="text" name="owner" required="required"><br>
+          Symbol: <input type="text" name="symbol" required="required"><br>
+          Shares: <input type="number" name="shares" required="required"><br>
+          Price: <input type="number" step="0.01" name="price" required="required"><br>
+          Notional: <input type="number" step="0.01" name="notional" required="required"><br>
+          When: <input type="text" name="when" required="required"><br>
+          Commission: <input type="number" step="0.01" name="commission" required="required"><br>
+          <input type="submit" value="Submit">
+      </form>
+
+<script>
+      $(document).ready(function(){
+          $('#getButton').click(function(){
+              $.ajax({
+                url: '/latestBuy',
+                type: 'GET',
+                success: function(data,status){
+                    alert("Server response data: " + JSON.stringify(data) + "\nStatus: " + status);
+                }
+              });
+          });
+      });
+      </script>
+      <ul><li>
+
+    <p>Get the most recent message from mongo</p>
+    <input type="button" value="GET to &quot;/latestBuy&quot;" id="getButton" >
+</li></ul>
+
+   <iframe name="redirect" style="display:none;"></iframe>
+   </body>
+</html>

@@ -1,0 +1,3 @@
+.build/							usr/src/trade-history
+terraform/scripts/install.sh	usr/src/trade-history
+terraform/scripts/start.sh		usr/src/trade-history

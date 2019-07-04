@@ -1,0 +1,9 @@
+---
+applications:
+- instances: 1
+  timeout: 180
+  name: trade-history
+  buildpack: swift_buildpack
+  command: "'trade-history'"
+  memory: 128M
+  random-route: true
